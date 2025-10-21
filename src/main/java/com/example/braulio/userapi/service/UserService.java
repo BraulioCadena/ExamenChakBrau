@@ -12,6 +12,7 @@ import org.springframework.security.config.provisioning.UserDetailsManagerResour
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.braulio.userapi.dto.UserDTO;
 import com.example.braulio.userapi.model.User;
 
 import jakarta.annotation.PostConstruct;
@@ -28,7 +29,7 @@ public class UserService {
 	}
 	
 	public List<UserDTO> getUsersSortedBy(String sortedBy){
-		Comparator<User> comparator = UserCoparator.getComparator(sorteBy);
+		Comparator<User> comparator = UserComparator.getComparator(sorteBy);
 		return users.stream()
 				.sorted(comparator)
 				.map(UserMapper::toDTO)
