@@ -8,7 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.security.config.provisioning.UserDetailsManagerResourceFactoryBean;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +22,13 @@ public class UserService {
 	
 	@PostConstruct
 	public void initUsers() {
-		users.add(UserFactory.create("user@gmail.com","use1","+52 5636956631","BRR210800XXX","calle arboledas No.1","MX","calle No.2" "US"));
-		users.add(UserFactory.create("usuario2@gmail.com","user2","+52 5636956632","YZZ121298YYY","calle pino No.2","MX","calle No.3", "MX"));
-		users.add(UserFactory.create("usuario2@gmail.com","user3","+52 5636956633","LSY120901ZZZ","calle arbol No.3","MX","calle No.4,"FR"));
+		users.add(UserFactory.create("user@gmail.com","user1","+52 5636956631","BRR210800XXX","calle arboledas No.1","MX","calle No.2","US"));
+		users.add(UserFactory.create("usuario2@gmail.com","user2","+52 5636956632","YZZ121298YYY","calle pino No.2","MX","calle No.3","MX"));
+		users.add(UserFactory.create("usuario3@gmail.com","user3","+52 5636956633","LSY120901ZZZ","calle arbol No.3","MX","calle No.4","FR"));
 	}
 	
 	public List<UserDTO> getUsersSortedBy(String sortedBy){
-		Comparator<User> comparator = UserComparator.getComparator(sorteBy);
+		Comparator<User> comparator = UserComparator.getComparator(sortedBy);
 		return users.stream()
 				.sorted(comparator)
 				.map(UserMapper::toDTO)
@@ -54,15 +53,15 @@ public class UserService {
 		user.setPassword(AESUtil.encrypt(dto.getPassword()));
 		user.setCreatedAt(DateUtil.getMadagascarTimestamp());
 		
-		user.add(users);
-		return UserMapper.toDTO();
+		users.add(user);
+		return UserMapper.toDTO(user);
 	}
 	
-	public UserDTO updateUser(UUID ID, Map<String, Object> updates) {
+	public UserDTO updateUser(UUID id, Map<String, Object> updates) {
 		User user = users.stream()
 				.filter(u -> u.getId().equals(id))
 				.findFirst()
-				.orElseThrow() -> new UsernameNotFoundException("User not found"));
+				.orElseThrow()->new UsernameNotFoundException("User not found"));
 				
 		updates.forEach((key, value) ->{
 			switch(key) {

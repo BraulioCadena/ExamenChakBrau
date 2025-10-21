@@ -9,15 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.example.braulio.userapi.dto.LoginRequest;
 import com.example.braulio.userapi.dto.LoginResponse;
-import com.sun.net.httpserver.Request;
 
 @Service
 public class AuthService {
 	@Autowired
 	private UserService userService;
 
-	public LoginResponse authenticate(LoginRequest loginRequest) {
-		Optional<User> userOpt = userService.findByTaxId(Request.getTaxId());
+	public LoginResponse authenticate(LoginRequest request) {
+		Optional<User> userOpt = userService.findByTaxId(request.getTaxId());
 		if(userOpt.isEmpty()) {
 			return new LoginResponse(false, "User noot found");
 			
