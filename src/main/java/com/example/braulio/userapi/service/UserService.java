@@ -47,22 +47,33 @@ public class UserService {
     }
 
     public UserDTO createUser(UserDTO dto) {
-        ValidationUtil.validateTaxId(dto.getTaxId());
-        ValidationUtil.validatePhone(dto.getPhone());
+        try {
+            ValidationUtil.validateTaxId(dto.getTaxId());
+            ValidationUtil.validatePhone(dto.getPhone());
 
-        if (userRepository.existsByTaxId(dto.getTaxId())) {
-            throw new DuplicateTaxIdException("Tax ID must be unique");
+            if (userRepository.existsByTaxId(dto.getTaxId())) {
+                throw new DuplicateTaxIdException("Tax ID must be unique");
+            }
+
+            User user = UserMapper.fromDTO(dto);
+            user.setId(UUID.randomUUID());
+            
+            System.out.println("Password to encrypt: '" + dto.getPassword() + "'");
+            System.out.println("Password length: " + dto.getPassword().length());
+            
+            String encryptedPassword = AESUtil.encrypt(dto.getPassword());
+            System.out.println("Encrypted password: " + encryptedPassword);
+            
+            user.setPassword(encryptedPassword);
+            user.setCreatedAt(DateUtil.getMadagascarTimestamp());
+
+            userRepository.save(user);
+            return UserMapper.toDTO(user);
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            throw e;
         }
-
-        User user = UserMapper.fromDTO(dto);
-        user.setId(UUID.randomUUID());
-        user.setPassword(AESUtil.encrypt(dto.getPassword()));
-        user.setCreatedAt(DateUtil.getMadagascarTimestamp());
-
-        userRepository.save(user);
-        return UserMapper.toDTO(user);
     }
-
     public UserDTO updateUser(UUID id, Map<String, Object> updates) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));

@@ -1,5 +1,6 @@
 package com.example.braulio.userapi.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.example.braulio.userapi.dto.AddressDTO;
@@ -18,17 +19,21 @@ public class UserMapper {
         dto.setPhone(user.getPhone());
         dto.setTaxId(user.getTaxId());
         dto.setCreatedAt(user.getCreatedAt());
+        
+        if (user.getAddresses() != null) {
+            List<AddressDTO> addressDTOs = user.getAddresses().stream().map(address -> {
+                AddressDTO a = new AddressDTO();
+                a.setId(address.getId());
+                a.setName(address.getName());
+                a.setStreet(address.getStreet());
+                a.setCountryCode(address.getCountryCode());
+                return a;
+            }).collect(Collectors.toList());
+            dto.setAddresses(addressDTOs);
+        } else {
+            dto.setAddresses(new ArrayList<>());
+        }
 
-        List<AddressDTO> addressDTOs = user.getAddresses().stream().map(address -> {
-            AddressDTO a = new AddressDTO();
-            a.setId(address.getId());
-            a.setName(address.getName());
-            a.setStreet(address.getStreet());
-            a.setCountryCode(address.getCountryCode());
-            return a;
-        }).collect(Collectors.toList());
-
-        dto.setAddresses(addressDTOs);
         return dto;
     }
 

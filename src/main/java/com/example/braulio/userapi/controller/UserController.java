@@ -27,12 +27,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(required = false) String sorteBy,
+    public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(required = false) String sortedBy,
             @RequestParam(required = false) String filter) {
         if (filter != null) {
             return ResponseEntity.ok(userService.filterUsers(filter));
         }
-        return ResponseEntity.ok(userService.getUsersSortedBy(sorteBy));
+        return ResponseEntity.ok(userService.getUsersSortedBy(sortedBy));
     }
 
     @PostMapping
