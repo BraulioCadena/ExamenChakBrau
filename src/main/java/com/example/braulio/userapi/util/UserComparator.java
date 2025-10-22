@@ -8,7 +8,7 @@ public class UserComparator {
 
     public static Comparator<User> getComparator(String sortedBy) {
         if (sortedBy == null || sortedBy.isBlank()) {
-            return Comparator.comparing(User::getId); // default sort
+            return Comparator.comparing(User::getId); 
         }
 
         return switch (sortedBy) {
