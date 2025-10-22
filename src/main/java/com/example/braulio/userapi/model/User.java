@@ -31,13 +31,13 @@ public class User {
 	private String password; // AES256 ENCRIPTADO
 	
 	@Column(name= "tax_id", nullable= false, unique= true)
-	private String tax_id;
+	private String taxId;
 	
 	@Column(name= "created_at", nullable= false)
 	private String createdAt; // TIEMPO DE MADAGASTACAR FORTAMTO DD-MM-YY
 	
 	@OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name= "use_id")
+	@JoinColumn(name= "user_id")
 	private List<Address> addresses;
 
 	public UUID getId() {
@@ -80,12 +80,12 @@ public class User {
 		this.password = password;
 	}
 
-	public String getTax_id() {
-		return tax_id;
+	public String getTaxId() {
+		return taxId;
 	}
 
-	public void setTax_id(String tax_id) {
-		this.tax_id = tax_id;
+	public void setTaxId(String taxId) {
+		this.taxId = taxId;
 	}
 
 	public String getCreatedAt() {
@@ -108,7 +108,7 @@ public class User {
 	}
 
 
-	public User(UUID id, String email, String name, String phone, String password, String tax_id, String createdAt,
+	public User(UUID id, String email, String name, String phone, String password, String taxId, String createdAt,
 			List<Address> addresses) {
 		super();
 		this.id = id;
@@ -116,7 +116,7 @@ public class User {
 		this.name = name;
 		this.phone = phone;
 		this.password = password;
-		this.tax_id = tax_id;
+		this.taxId = taxId;
 		this.createdAt = createdAt;
 		this.addresses = addresses;
 	}

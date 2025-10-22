@@ -19,6 +19,14 @@ public class Address {
 	@Column(name = "country_code")
 	private String countryCode;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
